@@ -25,9 +25,8 @@ export default function Recipe({ categories, foods }) {
 }
 
 const ArticleCard = ({ item, index, navigation }) => {
-    console.log(item);
     const handleOnpress= function(){
-        navigation.jumpTo('RecipeDetail');
+        navigation.navigate('RecipeDetail',item);
     }
   return (
     <View
