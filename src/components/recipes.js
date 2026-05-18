@@ -13,17 +13,31 @@ export default function Recipe({ categories, foods }) {
   return (
     <View style={styles.container}>
       <View testID="recipesDisplay">
-            
+            <FlatList
+            numColumns={2}
+            data={foods}
+            keyExtractor={function(item,index){return index.toString() }}
+            renderItem={renderItem}
+            />
       </View>
     </View>
   );
 }
 
 const ArticleCard = ({ item, index, navigation }) => {
+    console.log(item);
+    const handleOnpress= function(){
+        navigation.jumpTo('RecipeDetail');
+    }
   return (
     <View
       style={[styles.cardContainer, { paddingLeft: 20, paddingRight: 15}]} testID="articleDisplay"
     >
+        <TouchableOpacity onPress={handleOnpress}>
+            <Image style={styles.articleImage} source={{uri:item.recipeImage}}/>
+            <Text style={styles.articleText}>{item.recipeName}</Text>
+            <Text style={styles.articleDescription}>{item.cookingDescription}</Text>
+        </TouchableOpacity>
    
     </View>
   );
@@ -50,7 +64,7 @@ const styles = StyleSheet.create({
   },
   articleImage: {
     width: "100%",
-   
+    height:"100px",
     borderRadius: 35,
     backgroundColor: "rgba(0, 0, 0, 0.05)", // bg-black/5
   },
