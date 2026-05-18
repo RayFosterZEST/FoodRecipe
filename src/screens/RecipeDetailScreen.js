@@ -8,6 +8,15 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux"; // Redux hooks
 import { toggleFavorite } from "../redux/favoritesSlice"; // Redux action
 
+function MiscItem({icon, text}){
+    return (
+        <View style={styles.miscItem}>
+            <Text style={styles.miscIcon}>{icon}</Text>
+            <Text style={styles.miscText}>{text}</Text>
+        </View>
+    )
+}
+
 export default function RecipeDetailScreen(props) {
   const recipe = props.route.params; // recipe passed from previous screen
 console.log({recipe});
@@ -73,12 +82,22 @@ console.log({recipe});
             </Text>
           </View>
           <View style={styles.miscContainer} testID="miscContainer">
-        
+            <MiscItem icon={'⏱️'} text={`${recipe.ex_time} Mins`}/>
+            <MiscItem icon={'👥'} text={`${recipe.ex_servings} Servings`}/>
+            <MiscItem icon={'🔥'} text={`${recipe.ex_calories} Calories`}/>
+            <MiscItem icon={'🌡️'} text={recipe.ex_difficulty}/>
+       
       </View>
 
       {/* Ingredients */}
       <View style={styles.sectionContainer}>
-     
+          {
+            recipe.ingredients.map(function(ingredient, index){
+                return (
+                    <View key={index}/>
+                )
+            })
+          }
       </View>
 
       {/* Instructions */}
