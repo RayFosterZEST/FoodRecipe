@@ -27,7 +27,7 @@ console.log({recipe});
   const isFavourite = favoriterecipes?.some(
     (favrecipe) => favrecipe.idFood === recipe.idFood
   ); // Check by idrecipe
-
+  
   const navigation = useNavigation();
 
   const handleToggleFavorite = () => {
