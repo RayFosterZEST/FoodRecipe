@@ -42,7 +42,7 @@ console.log({recipe});
     >
       {/* recipe Image */}
       <View style={styles.imageContainer} testID="imageContainer">
-        <Image soruce={{uri:recipe.recipeImage}} style={styles.recipeImage}/>
+        <Image source={{uri:recipe.recipeImage}} style={styles.recipeImage}/>
       </View>
     
       {/* Back Button and Favorite Button */}
@@ -89,21 +89,29 @@ console.log({recipe});
        
       </View>
 
-      {/* Ingredients */}
-      <View style={styles.sectionContainer}>
+       
+
+    <View style={styles.sectionContainer} testID="sectionContainer">
+        {/* Ingredients */}
+        <Text style={styles.sectionTitle}>Ingredients</Text>
+        <View testID="ingredientsList" style={styles.ingredientsList} >
           {
             recipe.ingredients.map(function(ingredient, index){
                 return (
-                    <View key={index}/>
+                    <View key={index+'ing'} style={styles.ingredientItem}>
+                        <View style={styles.ingredientBullet}></View>
+                        <Text style={styles.ingredientText}>{ingredient.measure} - {ingredient.ingredientName}</Text>
+                    </View>
                 )
             })
           }
-      </View>
-
-      {/* Instructions */}
-      <View style={styles.sectionContainer} testID="sectionContainer">
-        
         </View>
+
+        {/* Instructions */}
+        <Text style={styles.sectionTitle}>Instructions</Text>
+        <Text style={styles.instructionsText}>{recipe.recipeInstructions}</Text>
+
+    </View>
           {/* Description */}
          
         </View>
