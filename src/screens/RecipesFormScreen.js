@@ -14,23 +14,28 @@ export default function RecipesFormScreen({ route, navigation }) {
   const saverecipe = async () => {
     try{
         const newrecipe = {
-            title:'',
-            image:'',
-            description:''
+            title:title,
+            image:image,
+            description:description
         }
         const customReceipies = await AsyncStorage.getItem('customrecipes');
+        console.log(customReceipies)
         let recipes = [];
         try{
             recipes = JSON.parse(customReceipies);
+            if (!Array.isArray(recipes)) {
+                recipes = [];
+            }
         }catch(error){
             console.log('No recipies found / could not parse', error);
         }
-        if(customReceipies[recipeIndex]){
-        customReceipies[recipeIndex]=recipeToEdit;
+        console.log('reccc',recipes, recipeIndex, recipes[recipeIndex])
+        if(recipes[recipeIndex]){
+            recipes[recipeIndex]=newrecipe;
         }else{
-            customReceipies.push(newrecipe);
+            recipes.push(newrecipe);
         }
-        await AsyncStorage.setItem('customrecipes',JSON.stringify(customReceipies));
+        await AsyncStorage.setItem('customrecipes',JSON.stringify(recipes));
 
         navigation.goBack();
     }catch(error){

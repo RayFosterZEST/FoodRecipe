@@ -19,9 +19,11 @@ import {
     const navigation = useNavigation();
     const [recipes, setrecipes] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [lastLoaded, setLastLoaded] = useState(new Date().getTime());
   
     useEffect(() => {
       const fetchrecipes = async () => {
+            setLoading(true);
             const storedRecipes = await AsyncStorage.getItem('customrecipes');
             let recipeList = [];
             try{
@@ -34,7 +36,7 @@ import {
         };
   
       fetchrecipes();
-    }, []);
+    }, [lastLoaded]);
   
     const handleAddrecipe = () => {
         navigation.navigate('RecipesFormScreen');
@@ -47,7 +49,7 @@ import {
         try{
             const newRecipeList = [...recipes];
             newRecipeList.splice(index,1);
-            await AsyncStorage.setItem('customrecipes',JSON.stringify(updatedrecipes));
+            await AsyncStorage.setItem('customrecipes',JSON.stringify(newRecipeList));
             setrecipes(newRecipeList);
         }catch(error){
             alert('Error deleting recipe');
@@ -56,7 +58,7 @@ import {
     };
   
     const editrecipe = (recipe, index) => {
-        navigation.navigate('RecipesFormScreen', {recipeToEdit:recipe, index});
+        navigation.navigate('RecipesFormScreen', {recipeToEdit:recipe, recipeIndex:index, onrecipeedit:function(){setLastLoaded(new Date().getTime())}});
     };
   
     return (
@@ -91,15 +93,16 @@ import {
   
                   {/* Edit and Delete Buttons */}
                   <View style={styles.actionButtonsContainer} testID="editDeleteButtons">
-                    <TouchableOpacity onPress={function(e){
+                    <TouchableOpacity style={styles.editButton} onPress={function(e){
                         editrecipe(recipe,index);
                     }}> 
-                    Edit
+                        <Text style={styles.editButtonText}>Edit</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={function(e){
+
+                    <TouchableOpacity style={styles.deleteButton} onPress={function(e){
                         deleterecipe(index);
                     }}> 
-                    Delete
+                        <Text style={styles.deleteButtonText}>Delete</Text>
                     </TouchableOpacity>
                 
                   </View>
@@ -155,7 +158,7 @@ import {
       marginTop: hp(5),
     },
     recipeCard: {
-      width: 400, // Make recipe card width more compact
+      width: 350, // Make recipe card width more compact
       height: 300, // Adjust the height of the card to fit content
       backgroundColor: "#fff",
       padding: wp(3),
@@ -169,7 +172,7 @@ import {
     },
     recipeImage: {
       width: 300, // Set width for recipe image
-      height: 150, // Adjust height of the image
+      height: 100, // Adjust height of the image
       borderRadius: 8,
       marginBottom: hp(1),
     },
