@@ -12,7 +12,31 @@ export default function RecipesFormScreen({ route, navigation }) {
   );
 
   const saverecipe = async () => {
- 
+    try{
+        const newrecipe = {
+            title:'',
+            image:'',
+            description:''
+        }
+        const customReceipies = await AsyncStorage.getItem('customrecipes');
+        let recipes = [];
+        try{
+            recipes = JSON.parse(customReceipies);
+        }catch(error){
+            console.log('No recipies found / could not parse', error);
+        }
+        if(customReceipies[recipeIndex]){
+        customReceipies[recipeIndex]=recipeToEdit;
+        }else{
+            customReceipies.push(newrecipe);
+        }
+        await AsyncStorage.setItem('customrecipes',JSON.stringify(customReceipies));
+
+        navigation.goBack();
+    }catch(error){
+        alert('An error occured');
+        console.error(error);
+    }
   };
 
   return (
