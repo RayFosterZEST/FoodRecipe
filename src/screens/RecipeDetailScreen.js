@@ -85,7 +85,7 @@ console.log({recipe});
             <MiscItem icon={'⏱️'} text={`${recipe.ex_time} Mins`}/>
             <MiscItem icon={'👥'} text={`${recipe.ex_servings} Servings`}/>
             <MiscItem icon={'🔥'} text={`${recipe.ex_calories} Calories`}/>
-            <MiscItem icon={'🌡️'} text={recipe.ex_difficulty}/>
+            <MiscItem icon={'🎖️'} text={recipe.ex_difficulty}/>
        
       </View>
 

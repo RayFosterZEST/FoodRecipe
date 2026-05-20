@@ -4,9 +4,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {widthPercentageToDP as wp,heightPercentageToDP as hp,} from "react-native-responsive-screen";
 
 export default function RecipesFormScreen({ route, navigation }) {
-  const { recipeToEdit, recipeIndex, onrecipeEdited } = route.params || {};
+  const { recipeToEdit, recipeIndex, onrecipeedit } = route.params || {};
   const [title, setTitle] = useState(recipeToEdit ? recipeToEdit.title : "");
   const [image, setImage] = useState(recipeToEdit ? recipeToEdit.image : "");
+  const [ingredients, setIngredients] = useState("");
   const [description, setDescription] = useState(
     recipeToEdit ? recipeToEdit.description : ""
   );
@@ -16,7 +17,8 @@ export default function RecipesFormScreen({ route, navigation }) {
         const newrecipe = {
             title:title,
             image:image,
-            description:description
+            description:description,
+            ingredients:ingredients
         }
         const customReceipies = await AsyncStorage.getItem('customrecipes');
         console.log(customReceipies)
@@ -29,12 +31,16 @@ export default function RecipesFormScreen({ route, navigation }) {
         }catch(error){
             console.log('No recipies found / could not parse', error);
         }
-        console.log('reccc',recipes, recipeIndex, recipes[recipeIndex])
+
         if(recipes[recipeIndex]){
+            //This is an edit
             recipes[recipeIndex]=newrecipe;
         }else{
+            //This is a new entry
             recipes.push(newrecipe);
         }
+
+        onrecipeedit(recipes);
         await AsyncStorage.setItem('customrecipes',JSON.stringify(recipes));
 
         navigation.goBack();
@@ -64,12 +70,20 @@ export default function RecipesFormScreen({ route, navigation }) {
         <Text style={styles.imagePlaceholder}>Upload Image URL</Text>
       )}
       <TextInput
-        placeholder="Description"
+        placeholder="Input a list of instructions"
         value={description}
         onChangeText={setDescription}
         multiline={true}
         numberOfLines={4}
         style={[styles.input, { height: hp(20), textAlignVertical: "top" }]}
+      />
+      <TextInput
+        placeholder="Input list of ingredients"
+        value={ingredients}
+        onChangeText={setIngredients}
+        multiline={true}
+        numberOfLines={4}
+        style={[styles.input, {height:hp(15),textAlignVertical:'top'}]}
       />
       <TouchableOpacity onPress={saverecipe} style={styles.saveButton}>
         <Text style={styles.saveButtonText}>Save recipe</Text>

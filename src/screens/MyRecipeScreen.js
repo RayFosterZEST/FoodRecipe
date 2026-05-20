@@ -19,7 +19,6 @@ import {
     const navigation = useNavigation();
     const [recipes, setrecipes] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [lastLoaded, setLastLoaded] = useState(new Date().getTime());
   
     useEffect(() => {
       const fetchrecipes = async () => {
@@ -36,10 +35,12 @@ import {
         };
   
       fetchrecipes();
-    }, [lastLoaded]);
+    }, []);
   
     const handleAddrecipe = () => {
-        navigation.navigate('RecipesFormScreen');
+        navigation.navigate('RecipesFormScreen', 
+        //Required to show data on save
+        {onrecipeedit:setrecipes});
     };
   
     const handlerecipeClick = (recipe) => {
@@ -58,7 +59,7 @@ import {
     };
   
     const editrecipe = (recipe, index) => {
-        navigation.navigate('RecipesFormScreen', {recipeToEdit:recipe, recipeIndex:index, onrecipeedit:function(){setLastLoaded(new Date().getTime())}});
+        navigation.navigate('RecipesFormScreen', {recipeToEdit:recipe, recipeIndex:index, onrecipeedit:setrecipes});
     };
   
     return (

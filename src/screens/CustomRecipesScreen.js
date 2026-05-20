@@ -76,7 +76,9 @@ import {
         <View style={styles.contentContainer} testID="contentContainer">
             <Text style={styles.recipeTitle}>{recipe.title}</Text>
             <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>Content</Text>
+                <Text style={styles.sectionTitle}>Ingredients</Text>
+                <Text style={styles.contentText}>{recipe.ingredients||'No ingredients registered'}</Text>
+                <Text style={styles.sectionTitle}>Instructions</Text>
                 <Text style={styles.contentText}>{recipe.description}</Text>
             </View>
         </View>
